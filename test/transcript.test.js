@@ -4,7 +4,9 @@ const {
   chooseTrack,
   extractVideoId,
   normalizeCaptionText,
-  parseTranscriptXml
+  parseTranscriptXml,
+  parseTranscriptJson3,
+  parseTimedTextTrackList
 } = require('../src/transcript');
 
 test('extractVideoId supports common YouTube URL formats', () => {
@@ -36,5 +38,24 @@ test('parseTranscriptXml turns caption XML into readable plain text', () => {
 });
 
 test('normalizeCaptionText strips tags, decodes entities, and collapses whitespace', () => {
-  assert.equal(normalizeCaptionText('<i>A&nbsp; B</i> &quot;C&quot;'), 'A&nbsp; B "C"');
+  assert.equal(normalizeCaptionText('<i>A&nbsp; B</i> &quot;C&quot;'), 'A B "C"');
+});
+
+test('parseTranscriptJson3 preserves caption event order', () => {
+  const json = JSON.stringify({
+    events: [
+      { tStartMs: 0, segs: [{ utf8: 'First ' }, { utf8: 'line' }] },
+      { tStartMs: 1000, segs: [{ utf8: 'Second line' }] }
+    ]
+  });
+  assert.equal(parseTranscriptJson3(json), 'First line\nSecond line');
+});
+
+test('parseTimedTextTrackList includes manual and auto-generated caption tracks', () => {
+  const xml = '<transcript_list><track id="0" name="English" lang_code="en" lang_translated="English"/><track id="1" name="English auto" lang_code="en" lang_translated="English" kind="asr"/></transcript_list>';
+  const tracks = parseTimedTextTrackList(xml, 'dQw4w9WgXcQ');
+  assert.equal(tracks.length, 2);
+  assert.equal(tracks[0].languageCode, 'en');
+  assert.equal(tracks[1].kind, 'asr');
+  assert.match(tracks[0].baseUrl, /v=dQw4w9WgXcQ/);
 });

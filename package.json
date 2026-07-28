@@ -1,0 +1,18 @@
+{
+  "name": "youtube-transcript-downloader",
+  "version": "1.0.0",
+  "description": "Paste a YouTube URL, fetch available captions, and download the transcript as a .txt file.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "youtube",
+    "transcript",
+    "captions",
+    "downloader"
+  ],
+  "author": "",
+  "license": "MIT"
+}

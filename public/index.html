@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube Transcript Downloader</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="card">
+      <p class="eyebrow">Captions to plain text</p>
+      <h1>YouTube Transcript Downloader</h1>
+      <p class="intro">Paste a public YouTube video URL and download the video's available captions as a clean .txt transcript.</p>
+
+      <form id="transcript-form">
+        <label for="youtube-url">YouTube URL</label>
+        <div class="form-row">
+          <input id="youtube-url" name="youtube-url" type="url" placeholder="https://www.youtube.com/watch?v=..." required>
+          <button type="submit">Get transcript</button>
+        </div>
+      </form>
+
+      <p id="status" role="status" aria-live="polite"></p>
+
+      <section id="result" class="result" hidden>
+        <div>
+          <h2 id="video-title"></h2>
+          <p id="language"></p>
+        </div>
+        <button id="download" type="button">Download .txt</button>
+        <textarea id="transcript" readonly aria-label="Transcript text"></textarea>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
